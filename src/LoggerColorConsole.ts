@@ -8,6 +8,8 @@ import { LogLevelSettingsType } from './Types/LogLevelSettingsType';
 import LogLevel from './LogLevel';
 import LogLevelSettings from './LogLevelSettings';
 
+import replaceContextVariables from './lib/replaceContextVariables';
+
 export default class LoggerColorConsole implements LoggerInterface {
     private color(str: string, color: ChalkColorType | undefined): string {
         if (color && typeof chalk[color] !== 'undefined') {
@@ -155,12 +157,7 @@ export default class LoggerColorConsole implements LoggerInterface {
         const isError: boolean = levelSettings && levelSettings.isError || false;
         const coloredLevelString: string = this.color(`[${level}]`, levelColor);
         const coloredTime: string = this.color(this.getTime(), 'yellow');
-        const generatedMessage: string = message.replace(
-            /{{([a-z][a-z0-9]*)}}/gi,
-            (match: string, variable: string): string => (
-                String(context[variable] || match)
-            )
-        );
+        const generatedMessage: string = replaceContextVariables(message, context);
         const logMessage: string = `${coloredTime} ${coloredLevelString} ${generatedMessage}\n\n`;
 
         if (isError) {
