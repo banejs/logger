@@ -1,5 +1,7 @@
 /* eslint no-extend-native: "off" */
 
+import chalk from 'chalk';
+
 import LoggerColorConsole from '../LoggerColorConsole';
 
 const colors = {
@@ -14,16 +16,25 @@ const colors = {
 };
 
 function open(color) {
+    if (chalk.supportsColor.level === 0) {
+        return '';
+    }
+
     return `\u001B[${color[0]}m`;
 }
 
 function close(color) {
+    if (chalk.supportsColor.level === 0) {
+        return '';
+    }
+
     return `\u001B[${color[1]}m`;
 }
 
 const time = `${open(colors.yellow)}14:07:43.041${close(colors.yellow)}`;
 
 describe('LoggerColorConsole', () => {
+    const originalChalkEnabled = chalk.enabled;
     const originalProcessStdoutWrite = process.stdout.write;
     const originalProcessStderrWrite = process.stderr.write;
     const originalDateGetHours = Date.prototype.getHours;
@@ -32,6 +43,7 @@ describe('LoggerColorConsole', () => {
     const originalDateGetMilliseconds = Date.prototype.getMilliseconds;
 
     beforeEach(() => {
+        chalk.enabled = true;
         process.stdout.write = jest.fn((str) => str);
         process.stderr.write = jest.fn((str) => str);
         Date.prototype.getHours = jest.fn(() => 14);
@@ -41,6 +53,7 @@ describe('LoggerColorConsole', () => {
     });
 
     afterAll(() => {
+        chalk.enabled = originalChalkEnabled;
         process.stdout.write = originalProcessStdoutWrite;
         process.stderr.write = originalProcessStderrWrite;
         Date.prototype.getHours = originalDateGetHours;
