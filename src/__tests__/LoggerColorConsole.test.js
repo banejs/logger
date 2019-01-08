@@ -1,5 +1,16 @@
 /* eslint no-extend-native: "off" */
 
+jest.mock('supports-color', () => ({
+    stdout: {
+        level: 3,
+        hasBasic: true,
+        has256: true,
+        has16m: true
+    }
+}));
+
+import chalk from 'chalk';
+
 import LoggerColorConsole from '../LoggerColorConsole';
 
 const colors = {
@@ -24,6 +35,7 @@ function close(color) {
 const time = `${open(colors.yellow)}14:07:43.041${close(colors.yellow)}`;
 
 describe('LoggerColorConsole', () => {
+    const originalChalkEnabled = chalk.enabled;
     const originalProcessStdoutWrite = process.stdout.write;
     const originalProcessStderrWrite = process.stderr.write;
     const originalDateGetHours = Date.prototype.getHours;
@@ -32,6 +44,7 @@ describe('LoggerColorConsole', () => {
     const originalDateGetMilliseconds = Date.prototype.getMilliseconds;
 
     beforeEach(() => {
+        chalk.enabled = true;
         process.stdout.write = jest.fn((str) => str);
         process.stderr.write = jest.fn((str) => str);
         Date.prototype.getHours = jest.fn(() => 14);
@@ -41,6 +54,7 @@ describe('LoggerColorConsole', () => {
     });
 
     afterAll(() => {
+        chalk.enabled = originalChalkEnabled;
         process.stdout.write = originalProcessStdoutWrite;
         process.stderr.write = originalProcessStderrWrite;
         Date.prototype.getHours = originalDateGetHours;
@@ -72,10 +86,10 @@ describe('LoggerColorConsole', () => {
         });
     });
 
-    describe('#emergency(message, context)', () => {
+    describe.only('#emergency(message, context)', () => {
         const level = `${open(colors.red)}[emergency]${close(colors.red)}`;
 
-        test('should display message with an emergency level', () => {
+        test.only('should display message with an emergency level', () => {
             const logger = new LoggerColorConsole();
 
             logger.emergency('some message');
