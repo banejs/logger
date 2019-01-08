@@ -36,8 +36,13 @@ describe('LoggerColorConsole', () => {
     const originalDateGetMilliseconds = Date.prototype.getMilliseconds;
 
     beforeEach(() => {
+        console.log(chalk);
+        console.log(chalk.enabled);
         chalk.enabled = true;
         chalk.supportsColor = { level: 3, hasBasic: true, has256: true, has16m: true };
+        console.log('yarrr');
+        console.log(chalk);
+        console.log(chalk.enabled);
         process.stdout.write = jest.fn((str) => str);
         process.stderr.write = jest.fn((str) => str);
         Date.prototype.getHours = jest.fn(() => 14);
