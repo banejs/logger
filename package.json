@@ -1,6 +1,6 @@
 {
   "name": "@banejs/logger",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "BaneJS Logger",
   "scripts": {
     "test": "npm run test:type-check && npm run test:tslint && npm run test:jest",

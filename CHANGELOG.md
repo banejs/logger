@@ -1,3 +1,7 @@
+# [1.0.0-beta.4](https://github.com/banejs/logger/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2019-01-08)
+
+
+
 # [1.0.0-beta.3](https://github.com/banejs/logger/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2018-11-10)
 
 
