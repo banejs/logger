@@ -16,18 +16,10 @@ const colors = {
 };
 
 function open(color) {
-    if (chalk.supportsColor.level === 0) {
-        return '';
-    }
-
     return `\u001B[${color[0]}m`;
 }
 
 function close(color) {
-    if (chalk.supportsColor.level === 0) {
-        return '';
-    }
-
     return `\u001B[${color[1]}m`;
 }
 
@@ -43,7 +35,9 @@ describe('LoggerColorConsole', () => {
     const originalDateGetMilliseconds = Date.prototype.getMilliseconds;
 
     beforeEach(() => {
-        chalk.enabled = true;
+        console.log(chalk);
+        console.log(chalk.enabled);
+        //chalk.enabled = true;
         process.stdout.write = jest.fn((str) => str);
         process.stderr.write = jest.fn((str) => str);
         Date.prototype.getHours = jest.fn(() => 14);
@@ -85,10 +79,10 @@ describe('LoggerColorConsole', () => {
         });
     });
 
-    describe('#emergency(message, context)', () => {
+    describe.only('#emergency(message, context)', () => {
         const level = `${open(colors.red)}[emergency]${close(colors.red)}`;
 
-        test('should display message with an emergency level', () => {
+        test.only('should display message with an emergency level', () => {
             const logger = new LoggerColorConsole();
 
             logger.emergency('some message');
