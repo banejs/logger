@@ -1,5 +1,14 @@
 /* eslint no-extend-native: "off" */
 
+jest.mock('supports-color', () => ({
+    stdout: {
+        level: 3,
+        hasBasic: true,
+        has256: true,
+        has16m: true
+    }
+}));
+
 import chalk from 'chalk';
 
 import LoggerColorConsole from '../LoggerColorConsole';
@@ -27,7 +36,6 @@ const time = `${open(colors.yellow)}14:07:43.041${close(colors.yellow)}`;
 
 describe('LoggerColorConsole', () => {
     const originalChalkEnabled = chalk.enabled;
-    const originalChalkSupportsColor = chalk.supportsColor;
     const originalProcessStdoutWrite = process.stdout.write;
     const originalProcessStderrWrite = process.stderr.write;
     const originalDateGetHours = Date.prototype.getHours;
@@ -36,13 +44,7 @@ describe('LoggerColorConsole', () => {
     const originalDateGetMilliseconds = Date.prototype.getMilliseconds;
 
     beforeEach(() => {
-        console.log(chalk);
-        console.log(chalk.enabled);
         chalk.enabled = true;
-        chalk.supportsColor = { level: 3, hasBasic: true, has256: true, has16m: true };
-        console.log('yarrr');
-        console.log(chalk);
-        console.log(chalk.enabled);
         process.stdout.write = jest.fn((str) => str);
         process.stderr.write = jest.fn((str) => str);
         Date.prototype.getHours = jest.fn(() => 14);
@@ -53,7 +55,6 @@ describe('LoggerColorConsole', () => {
 
     afterAll(() => {
         chalk.enabled = originalChalkEnabled;
-        chalk.supportsColor = originalChalkSupportsColor;
         process.stdout.write = originalProcessStdoutWrite;
         process.stderr.write = originalProcessStderrWrite;
         Date.prototype.getHours = originalDateGetHours;
