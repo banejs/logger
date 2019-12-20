@@ -39,7 +39,6 @@
     "@babel/plugin-proposal-object-rest-spread": "~7.7.7",
     "@babel/preset-env": "~7.7.7",
     "@babel/preset-typescript": "~7.7.7",
-    "@types/chalk": "^2.2.0",
     "@types/jest": "~24.0.24",
     "@types/node": "~12.12.21",
     "babel-core": "~7.0.0-bridge.0",
