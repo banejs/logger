@@ -1,17 +1,49 @@
 import chalk from 'chalk';
 
-import LoggerInterface from './LoggerInterface';
-import { ContextType } from './Types/ContextType';
-import { ChalkColorType } from './Types/ChalkColorType';
-import { LogLevelSettingsType } from './Types/LogLevelSettingsType';
+import LoggerInterface from './types/LoggerInterface';
+import AdditionalDataInterface from './types/AdditionalDataInterface';
+import LoggerColorSettingsInterface from './types/LoggerColorSettingsInterface';
+import { MessageType } from './types/MessageType';
+import { ChalkColorType } from './types/ChalkColorType';
+import { LogLevel } from './types/LogLevel';
 
-import LogLevel from './LogLevel';
-import LogLevelSettings from './LogLevelSettings';
-
-import replaceContextVariables from './lib/replaceContextVariables';
+const SETTINGS: Record<LogLevel, LoggerColorSettingsInterface> = {
+    [LogLevel.ERROR]: {
+        color: 'red',
+        type: 'stderr'
+    },
+    [LogLevel.WARNING]: {
+        color: 'yellow',
+        type: 'stderr'
+    },
+    [LogLevel.INFO]: {
+        color: 'blue',
+        type: 'stdout'
+    },
+    [LogLevel.DEBUG]: {
+        color: 'cyan',
+        type: 'stdout'
+    }
+};
 
 export default class LoggerColorConsole implements LoggerInterface {
-    private color(str: string, color: ChalkColorType | undefined): string {
+    public error(message: MessageType, additionalData?: AdditionalDataInterface): void {
+        this.log(LogLevel.ERROR, message, additionalData);
+    }
+
+    public warning(message: MessageType, additionalData?: AdditionalDataInterface): void {
+        this.log(LogLevel.WARNING, message, additionalData);
+    }
+
+    public info(message: MessageType, additionalData?: AdditionalDataInterface): void {
+        this.log(LogLevel.INFO, message, additionalData);
+    }
+
+    public debug(message: MessageType, additionalData?: AdditionalDataInterface): void {
+        this.log(LogLevel.DEBUG, message, additionalData);
+    }
+
+    private colorize(str: string, color: ChalkColorType | undefined): string {
         if (color && typeof chalk[color] !== 'undefined') {
             return chalk[color](str);
         }
@@ -29,141 +61,23 @@ export default class LoggerColorConsole implements LoggerInterface {
         return `${hours}:${minutes}:${seconds}.${milliseconds}`;
     }
 
-    /**
-     * System is unusable.
-     *
-     * @param {string|Error} message
-     * @param {Object} [context={}]
-     */
-    public emergency(message: string | Error, context: ContextType = {}): void {
-        if ((message instanceof Error) && message.stack) {
-            this.log(LogLevel.EMERGENCY, message.stack, context);
-        } else if (message instanceof Error) {
-            this.log(LogLevel.EMERGENCY, message.message, context);
-        } else {
-            this.log(LogLevel.EMERGENCY, message, context);
+    public log(level: LogLevel, message: MessageType, additionalData?: AdditionalDataInterface): void {
+        const levelSettings: LoggerColorSettingsInterface = SETTINGS[level];
+        const time: string = this.colorize(this.getTime(), 'yellow');
+        const levelType: string = this.colorize(`[${level}]`, levelSettings.color);
+        let str: string = `${time} ${levelType} ${message}`;
+        let additionalDataJson: string | undefined;
+
+        try {
+            additionalDataJson = JSON.stringify(additionalData, null, 2);
+        } catch (e) {}
+
+        if (Object.prototype.toString.call(additionalDataJson) !== '[object Undefined]') {
+            str += `\n${additionalDataJson}`;
         }
-    }
 
-    /**
-     * Action must be taken immediately.
-     *
-     * Example: Entire website down, database unavailable, etc. This should
-     * trigger the SMS alerts and wake you up.
-     *
-     * @param {string|Error} message
-     * @param {Object} [context={}]
-     */
-    public alert(message: string | Error, context: ContextType = {}): void {
-        if ((message instanceof Error) && message.stack) {
-            this.log(LogLevel.ALERT, message.stack, context);
-        } else if (message instanceof Error) {
-            this.log(LogLevel.ALERT, message.message, context);
-        } else {
-            this.log(LogLevel.ALERT, message, context);
-        }
-    }
+        str += '\n\n';
 
-    /**
-     * Critical conditions.
-     *
-     * Example: Application component unavailable, unexpected exception.
-     *
-     * @param {string|Error} message
-     * @param {Object} [context={}]
-     */
-    public critical(message: string | Error, context: ContextType = {}): void {
-        if ((message instanceof Error) && message.stack) {
-            this.log(LogLevel.CRITICAL, message.stack, context);
-        } else if (message instanceof Error) {
-            this.log(LogLevel.CRITICAL, message.message, context);
-        } else {
-            this.log(LogLevel.CRITICAL, message, context);
-        }
-    }
-
-    /**
-     * Runtime errors that do not require immediate action but should typically
-     * be logged and monitored.
-     *
-     * @param {string|Error} message
-     * @param {Object} [context={}]
-     */
-    public error(message: string | Error, context: ContextType = {}): void {
-        if ((message instanceof Error) && message.stack) {
-            this.log(LogLevel.ERROR, message.stack, context);
-        } else if (message instanceof Error) {
-            this.log(LogLevel.ERROR, message.message, context);
-        } else {
-            this.log(LogLevel.ERROR, message, context);
-        }
-    }
-
-    /**
-     * Exceptional occurrences that are not errors.
-     *
-     * Example: Use of deprecated APIs, poor use of an API, undesirable things
-     * that are not necessarily wrong.
-     *
-     * @param {string} message
-     * @param {Object} [context={}]
-     */
-    public warning(message: string, context: ContextType = {}): void {
-        this.log(LogLevel.WARNING, message, context);
-    }
-
-    /**
-     * Normal but significant events.
-     *
-     * @param {string} message
-     * @param {Object} [context={}]
-     */
-    public notice(message: string, context: ContextType = {}): void {
-        this.log(LogLevel.NOTICE, message, context);
-    }
-
-    /**
-     * Interesting events.
-     *
-     * Example: User logs in, SQL logs.
-     *
-     * @param {string} message
-     * @param {Object} [context={}]
-     */
-    public info(message: string, context: ContextType = {}): void {
-        this.log(LogLevel.INFO, message, context);
-    }
-
-    /**
-     * Detailed debug information.
-     *
-     * @param {string} message
-     * @param {Object} [context={}]
-     */
-    public debug(message: string, context: ContextType = {}): void {
-        this.log(LogLevel.DEBUG, message, context);
-    }
-
-    /**
-     * Logs with an arbitrary level.
-     *
-     * @param {string} level
-     * @param {string} message
-     * @param {Object} [context={}]
-     */
-    public log(level: string, message: string, context: ContextType = {}): void {
-        const levelSettings: LogLevelSettingsType[keyof LogLevelSettingsType] | undefined = LogLevelSettings[level];
-        const levelColor: ChalkColorType | undefined = levelSettings && levelSettings.color;
-        const isError: boolean = levelSettings && levelSettings.isError || false;
-        const coloredLevelString: string = this.color(`[${level}]`, levelColor);
-        const coloredTime: string = this.color(this.getTime(), 'yellow');
-        const generatedMessage: string = replaceContextVariables(message, context);
-        const logMessage: string = `${coloredTime} ${coloredLevelString} ${generatedMessage}\n\n`;
-
-        if (isError) {
-            process.stderr.write(logMessage);
-        } else {
-            process.stdout.write(logMessage);
-        }
+        process[levelSettings.type].write(str);
     }
 }
