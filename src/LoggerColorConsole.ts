@@ -65,7 +65,7 @@ export default class LoggerColorConsole implements LoggerInterface {
         const levelSettings: LoggerColorSettingsInterface = SETTINGS[level];
         const time: string = this.colorize(this.getTime(), 'yellow');
         const levelType: string = this.colorize(`[${level}]`, levelSettings.color);
-        let str: string = `${time} ${levelType} ${message}`;
+        let str: string = `${time} ${levelType} ${message instanceof Error && message.stack ? message.stack : message}`;
         let additionalDataJson: string | undefined;
 
         try {

@@ -93,7 +93,7 @@ describe('LoggerColorConsole', () => {
             const errorInstance: Error = new Error('some message');
 
             logger.error(errorInstance);
-            expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance}\n\n`);
+            expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance.stack}\n\n`);
         });
 
         test('should display error message with an error level with additional data', () => {
@@ -101,7 +101,7 @@ describe('LoggerColorConsole', () => {
             const errorInstance: Error = new Error('some message');
 
             logger.error(errorInstance, { foo: 'bar' });
-            expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance}\n${additionalDataStringDevelopment}\n\n`);
+            expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance.stack}\n${additionalDataStringDevelopment}\n\n`);
         });
     });
 
@@ -137,7 +137,7 @@ describe('LoggerColorConsole', () => {
             const errorInstance: Error = new Error('some message');
 
             logger.warning(errorInstance);
-            expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance}\n\n`);
+            expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance.stack}\n\n`);
         });
 
         test('should display error message with a warning level with additional data', () => {
@@ -145,7 +145,7 @@ describe('LoggerColorConsole', () => {
             const errorInstance: Error = new Error('some message');
 
             logger.warning(errorInstance, { foo: 'bar' });
-            expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance}\n${additionalDataStringDevelopment}\n\n`);
+            expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance.stack}\n${additionalDataStringDevelopment}\n\n`);
         });
     });
 
@@ -181,7 +181,7 @@ describe('LoggerColorConsole', () => {
             const errorInstance: Error = new Error('some message');
 
             logger.info(errorInstance);
-            expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance}\n\n`);
+            expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance.stack}\n\n`);
         });
 
         test('should display error message with an info level with additional data', () => {
@@ -189,7 +189,7 @@ describe('LoggerColorConsole', () => {
             const errorInstance: Error = new Error('some message');
 
             logger.info(errorInstance, { foo: 'bar' });
-            expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance}\n${additionalDataStringDevelopment}\n\n`);
+            expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance.stack}\n${additionalDataStringDevelopment}\n\n`);
         });
     });
 
@@ -225,7 +225,7 @@ describe('LoggerColorConsole', () => {
             const errorInstance: Error = new Error('some message');
 
             logger.debug(errorInstance);
-            expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance}\n\n`);
+            expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance.stack}\n\n`);
         });
 
         test('should display error message with a debug level with additional data', () => {
@@ -233,7 +233,7 @@ describe('LoggerColorConsole', () => {
             const errorInstance: Error = new Error('some message');
 
             logger.debug(errorInstance, { foo: 'bar' });
-            expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance}\n${additionalDataStringDevelopment}\n\n`);
+            expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} ${errorInstance.stack}\n${additionalDataStringDevelopment}\n\n`);
         });
     });
 });
