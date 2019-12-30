@@ -1,4 +1,4 @@
-import AdditionalDataInterface from './AdditionalDataInterface';
+import IAdditionalData from './IAdditionalData';
 import { MessageType } from './MessageType';
 import { LogLevel } from './LogLevel';
 
@@ -14,16 +14,16 @@ import { LogLevel } from './LogLevel';
  * can be made by implementors is that if an Exception instance is given
  * to produce a stack trace, it MUST be in a key named "exception".
  */
-export default interface LoggerInterface {
+export default interface ILogger {
     /**
      * Runtime errors.
      *
      * @param {MessageType} message
-     * @param {AdditionalDataInterface} [additionalData]
+     * @param {IAdditionalData} [additionalData]
      *
      * @return {void}
      */
-    error(message: MessageType, additionalData?: AdditionalDataInterface): void;
+    error(message: MessageType, additionalData?: IAdditionalData): void;
 
     /**
      * Exceptional occurrences that are not errors.
@@ -32,11 +32,11 @@ export default interface LoggerInterface {
      * that are not necessarily wrong.
      *
      * @param {MessageType} message
-     * @param {AdditionalDataInterface} [additionalData]
+     * @param {IAdditionalData} [additionalData]
      *
      * @return {void}
      */
-    warning(message: MessageType, additionalData?: AdditionalDataInterface): void;
+    warning(message: MessageType, additionalData?: IAdditionalData): void;
 
     /**
      * Interesting events.
@@ -44,30 +44,30 @@ export default interface LoggerInterface {
      * Example: User logs in, SQL logs.
      *
      * @param {MessageType} message
-     * @param {AdditionalDataInterface} [additionalData]
+     * @param {IAdditionalData} [additionalData]
      *
      * @return {void}
      */
-    info(message: MessageType, additionalData?: AdditionalDataInterface): void;
+    info(message: MessageType, additionalData?: IAdditionalData): void;
 
     /**
      * Detailed debug information.
      *
      * @param {MessageType} message
-     * @param {AdditionalDataInterface} [additionalData]
+     * @param {IAdditionalData} [additionalData]
      *
      * @return {void}
      */
-    debug(message: MessageType, additionalData?: AdditionalDataInterface): void;
+    debug(message: MessageType, additionalData?: IAdditionalData): void;
 
     /**
      * Logs with an arbitrary level.
      *
      * @param {LogLevel} level
      * @param {MessageType} message
-     * @param {AdditionalDataInterface} [additionalData]
+     * @param {IAdditionalData} [additionalData]
      *
      * @return {void}
      */
-    log(level: LogLevel, message: MessageType, additionalData?: AdditionalDataInterface): void;
+    log(level: LogLevel, message: MessageType, additionalData?: IAdditionalData): void;
 }

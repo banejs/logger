@@ -1,13 +1,13 @@
 import chalk from 'chalk';
 
-import LoggerInterface from './types/LoggerInterface';
-import AdditionalDataInterface from './types/AdditionalDataInterface';
-import LoggerColorSettingsInterface from './types/LoggerColorSettingsInterface';
+import ILogger from './types/ILogger';
+import IAdditionalData from './types/IAdditionalData';
+import ILoggerColorSettings from './types/ILoggerColorSettings';
 import { MessageType } from './types/MessageType';
 import { ChalkColorType } from './types/ChalkColorType';
 import { LogLevel } from './types/LogLevel';
 
-const SETTINGS: Record<LogLevel, LoggerColorSettingsInterface> = {
+const SETTINGS: Record<LogLevel, ILoggerColorSettings> = {
     [LogLevel.ERROR]: {
         color: 'red',
         type: 'stderr'
@@ -26,20 +26,20 @@ const SETTINGS: Record<LogLevel, LoggerColorSettingsInterface> = {
     }
 };
 
-export default class LoggerColorConsole implements LoggerInterface {
-    public error(message: MessageType, additionalData?: AdditionalDataInterface): void {
+export default class LoggerColorConsole implements ILogger {
+    public error(message: MessageType, additionalData?: IAdditionalData): void {
         this.log(LogLevel.ERROR, message, additionalData);
     }
 
-    public warning(message: MessageType, additionalData?: AdditionalDataInterface): void {
+    public warning(message: MessageType, additionalData?: IAdditionalData): void {
         this.log(LogLevel.WARNING, message, additionalData);
     }
 
-    public info(message: MessageType, additionalData?: AdditionalDataInterface): void {
+    public info(message: MessageType, additionalData?: IAdditionalData): void {
         this.log(LogLevel.INFO, message, additionalData);
     }
 
-    public debug(message: MessageType, additionalData?: AdditionalDataInterface): void {
+    public debug(message: MessageType, additionalData?: IAdditionalData): void {
         this.log(LogLevel.DEBUG, message, additionalData);
     }
 
@@ -61,8 +61,8 @@ export default class LoggerColorConsole implements LoggerInterface {
         return `${hours}:${minutes}:${seconds}.${milliseconds}`;
     }
 
-    public log(level: LogLevel, message: MessageType, additionalData?: AdditionalDataInterface): void {
-        const levelSettings: LoggerColorSettingsInterface = SETTINGS[level];
+    public log(level: LogLevel, message: MessageType, additionalData?: IAdditionalData): void {
+        const levelSettings: ILoggerColorSettings = SETTINGS[level];
         const time: string = this.colorize(this.getTime(), 'yellow');
         const levelType: string = this.colorize(`[${level}]`, levelSettings.color);
         let str: string = `${time} ${levelType} ${message instanceof Error && message.stack ? message.stack : message}`;

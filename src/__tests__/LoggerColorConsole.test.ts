@@ -9,7 +9,7 @@ jest.mock('supports-color', () => ({
     }
 }));
 
-import LoggerInterface from '../types/LoggerInterface';
+import ILogger from '../types/ILogger';
 import { MessageType } from '../types/MessageType';
 
 import LoggerColorConsole from '../LoggerColorConsole';
@@ -75,21 +75,21 @@ describe('LoggerColorConsole', () => {
         });
 
         test('should display message with an error level', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
 
             logger.error('some message');
             expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} some message\n\n`);
         });
 
         test('should display message with an error level with additional data', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
 
             logger.error('some message', { foo: 'bar' });
             expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} some message\n${additionalDataStringDevelopment}\n\n`);
         });
 
         test('should display error message with an error level', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
             const errorInstance: Error = new Error('some message');
 
             logger.error(errorInstance);
@@ -97,7 +97,7 @@ describe('LoggerColorConsole', () => {
         });
 
         test('should display error message with an error level with additional data', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
             const errorInstance: Error = new Error('some message');
 
             logger.error(errorInstance, { foo: 'bar' });
@@ -119,21 +119,21 @@ describe('LoggerColorConsole', () => {
         });
 
         test('should display message with a warning level', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
 
             logger.warning('some message');
             expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} some message\n\n`);
         });
 
         test('should display message with a warning level with additional data', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
 
             logger.warning('some message', { foo: 'bar' });
             expect((process.stderr.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} some message\n${additionalDataStringDevelopment}\n\n`);
         });
 
         test('should display error message with a warning level', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
             const errorInstance: Error = new Error('some message');
 
             logger.warning(errorInstance);
@@ -141,7 +141,7 @@ describe('LoggerColorConsole', () => {
         });
 
         test('should display error message with a warning level with additional data', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
             const errorInstance: Error = new Error('some message');
 
             logger.warning(errorInstance, { foo: 'bar' });
@@ -163,21 +163,21 @@ describe('LoggerColorConsole', () => {
         });
 
         test('should display message with an info level', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
 
             logger.info('some message');
             expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} some message\n\n`);
         });
 
         test('should display message with an info level with additional data', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
 
             logger.info('some message', { foo: 'bar' });
             expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} some message\n${additionalDataStringDevelopment}\n\n`);
         });
 
         test('should display error message with an info level', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
             const errorInstance: Error = new Error('some message');
 
             logger.info(errorInstance);
@@ -185,7 +185,7 @@ describe('LoggerColorConsole', () => {
         });
 
         test('should display error message with an info level with additional data', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
             const errorInstance: Error = new Error('some message');
 
             logger.info(errorInstance, { foo: 'bar' });
@@ -207,21 +207,21 @@ describe('LoggerColorConsole', () => {
         });
 
         test('should display message with a debug level', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
 
             logger.debug('some message');
             expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} some message\n\n`);
         });
 
         test('should display message with a debug level with additional data', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
 
             logger.debug('some message', { foo: 'bar' });
             expect((process.stdout.write as jest.Mock).mock.results[0].value).toBe(`${time} ${level} some message\n${additionalDataStringDevelopment}\n\n`);
         });
 
         test('should display error message with a debug level', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
             const errorInstance: Error = new Error('some message');
 
             logger.debug(errorInstance);
@@ -229,7 +229,7 @@ describe('LoggerColorConsole', () => {
         });
 
         test('should display error message with a debug level with additional data', () => {
-            const logger: LoggerInterface = new LoggerColorConsole();
+            const logger: ILogger = new LoggerColorConsole();
             const errorInstance: Error = new Error('some message');
 
             logger.debug(errorInstance, { foo: 'bar' });
