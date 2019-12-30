@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/banejs/logger/compare/v1.0.1...v1.1.0) (2019-12-30)
+
+
+### Bug Fixes
+
+* **color-console:** show error stacktrace ([707c6c4](https://github.com/banejs/logger/commit/707c6c4cf812f4de2e89976e04bc640a57ebbed3))
+
+
+
 ## [1.0.1](https://github.com/banejs/logger/compare/v1.0.0...v1.0.1) (2019-12-20)
 
 
